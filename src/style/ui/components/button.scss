@@ -1,14 +1,16 @@
+@import "../../vars.scss";
+
 button,
 input[type="submit"] {
     appearance: none;
     border: 0;
-    background-color: #5e5eac;
+    background-color: $colorPrimary;
     color: white;
     padding: 10px 15px;
     border-radius: 5px;
 
     &:hover {
         cursor: pointer;
-        background-color: #515194;
+        background-color: $colorSecondary;
     }
 }

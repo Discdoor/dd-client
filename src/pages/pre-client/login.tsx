@@ -15,7 +15,7 @@ const LoginPage = () => {
                 <FormField ident="password" name="Password" type="password"></FormField>
                 <button className="submit">Login</button>
                 <p>
-                    No account yet? <a href="/sign-up">Sign up now!</a>
+                    No account yet? <a href="/signup">Sign up now!</a>
                 </p>
             </div>
         </div>
