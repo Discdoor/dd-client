@@ -1,4 +1,4 @@
 {
-    "gwServer": "http://localhost:9000/",
+    "gwServer": "http://localhost:9000/v1",
     "cdn": "http://localhost:8083"
 }
