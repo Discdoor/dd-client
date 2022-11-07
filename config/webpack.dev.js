@@ -9,7 +9,7 @@ module.exports = merge(require('./webpack.common'), {
         allowedHosts: 'all',
         hot: false,
         liveReload: true,
-        port: 8192,
+        port: 4096,
         historyApiFallback: true
     }
 });
