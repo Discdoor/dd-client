@@ -1,8 +1,8 @@
 interface APIDefinitions {
     /**
-     * Authentication server URL.
+     * Gateway server URL.
      */
-    authServer: string;
+    gwServer: string;
 
     /**
      * CDN server URL.

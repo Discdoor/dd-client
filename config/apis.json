@@ -1,4 +1,4 @@
 {
-    "authServer": "http://localhost:8082",
+    "gwServer": "http://localhost:9000/",
     "cdn": "http://localhost:8083"
 }

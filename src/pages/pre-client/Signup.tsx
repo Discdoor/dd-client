@@ -10,7 +10,7 @@ import DateField from '../../components/basic/DateField';
 import { APIResponse } from '../../api/APIResponse';
 import { UserEntity } from '../../api/entities/UserEntity';
 
-const AUTH_SIGNUP_ENDPOINT = `${getAPIDefinitions().authServer + "/auth/register"}`;
+const AUTH_SIGNUP_ENDPOINT = `${getAPIDefinitions().gwServer + "/auth/register"}`;
 
 class SignupPage extends React.Component {
     // Refs

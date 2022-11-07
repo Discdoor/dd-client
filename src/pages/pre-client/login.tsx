@@ -6,7 +6,7 @@ import "../../style/ui/components/form.scss";
 import "../../style/ui/components/button.scss";
 import { getAPIDefinitions } from '../../api/APIProps';
 
-const AUTH_LOGIN_ENDPOINT = `${getAPIDefinitions().authServer + "/auth/login"}`;
+const AUTH_LOGIN_ENDPOINT = `${getAPIDefinitions().gwServer + "/auth/login"}`;
 
 // TODO probably clear endpoint
 
