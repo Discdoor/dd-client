@@ -1,0 +1,4 @@
+{
+    "authServer": "http://localhost:8082",
+    "cdn": "http://localhost:8083"
+}
