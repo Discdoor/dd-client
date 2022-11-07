@@ -1,0 +1,26 @@
+.form {
+    // Field styles
+    .field {
+        margin-bottom: 1em;
+
+        input {
+            margin-top: 0.25rem;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3px 5px;
+            line-height: 1.4;
+            border: 2px solid gray;
+            border-radius: 3px;
+            outline: 0;
+            font-size: 13px;
+
+            &:focus {
+                border-color: #5e5eac;
+            }
+        }
+    }
+
+    .submit {
+        width: 100%;
+    }
+}

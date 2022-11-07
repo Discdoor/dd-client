@@ -2,16 +2,22 @@ import * as React from 'react';
 import FormField from '../../components/basic/Field';
 import "../../style/page/login.scss";
 import "../../style/ui/common.scss";
+import "../../style/ui/components/form.scss";
+import "../../style/ui/components/button.scss";
 
 const LoginPage = () => {
     return <div className="login-page">
         <div className="box creds">
             <div className="title">Sign in</div>
             <div className="subtitle">Please enter your account details.</div>
-            <form className="login-form" method="POST" action="/auth/login">
-                <FormField ident="username" name="Username" type="normal"></FormField>
+            <div className="form">
+                <FormField ident="username" name="Email" type="email"></FormField>
                 <FormField ident="password" name="Password" type="password"></FormField>
-            </form>
+                <button className="submit">Login</button>
+                <p>
+                    No account yet? <a href="/sign-up">Sign up now!</a>
+                </p>
+            </div>
         </div>
     </div>
 }
