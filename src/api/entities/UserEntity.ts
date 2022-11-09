@@ -1,7 +1,7 @@
 /**
  * API User entity.
  */
-export interface UserEntity {
+export default interface UserEntity {
     /**
      * User avatar URL.
      */

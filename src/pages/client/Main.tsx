@@ -3,25 +3,44 @@ import { performAPIRequest } from '../../api/APIFetch';
 import { getAPIDefinitions } from '../../api/APIProps';
 import "../../style/client/client.scss";
 import InitPage from './Init';
+import ClientPage from './Client';
+import UserEntity from '../../api/entities/UserEntity';
 
-const MainClientPage = () => {
-    // Show init page
+interface ClientIState {
+    /**
+     * Current client page.
+     */
+    page: JSX.Element;
+}
 
-    // Run the checks asynchronously
-    (async function() {
+class MainClientPage extends React.Component<{}, ClientIState> {
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            page: <InitPage></InitPage>,
+        }
+    }
+
+    async componentDidMount(): Promise<void> {
         // Check if session is valid
-        const request = await performAPIRequest(getAPIDefinitions().gwServer + "/auth/session/validate", "POST", {});
+        const response = await performAPIRequest<UserEntity>(getAPIDefinitions().gwServer + "/auth/user/@me", "GET", {});
 
-        if(!request.success) {
+        if(!response.success) {
             // Send user back to login page - login failed
             localStorage.removeItem("sessKey");
             window.location.href = "/login";
         } else {
-            // Load the app
+            // Show the main client component
+            this.setState({
+                page: <ClientPage user={response.data}></ClientPage>,
+            });
         }
-    })();
+    }
 
-    return <InitPage></InitPage>
+    render() {
+        return this.state.page;
+    }
 }
 
 export default MainClientPage

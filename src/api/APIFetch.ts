@@ -16,7 +16,7 @@ export async function performAPIRequest<T>(url: string, method: string, body: an
             ...(sessionKey != null) ? { 'Authorization': 'Bearer ' + sessionKey } : {}
         },
         method,
-        body: JSON.stringify(body)
+        body: (method == "GET") ? null : JSON.stringify(body)
     });
 
     const response: APIResponse<T> = await req.json();
