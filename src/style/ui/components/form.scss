@@ -27,4 +27,19 @@
     .submit {
         width: 100%;
     }
+
+    // Error box styles
+    .error-box {
+        display: none;
+        padding: 10px;
+        background: rgb(211, 24, 24);
+        color: white;
+        border-radius: 5px;
+        margin-top: 1em;
+    
+        // active state
+        &.active {
+            display: block;
+        }
+    }
 }

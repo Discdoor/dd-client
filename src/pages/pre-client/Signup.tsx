@@ -9,6 +9,8 @@ import Checkbox from '../../components/basic/Checkbox';
 import DateField from '../../components/basic/DateField';
 import { APIResponse } from '../../api/APIResponse';
 import { UserEntity } from '../../api/entities/UserEntity';
+import FormErrorProvider from '../../components/basic/FormErrorProvider';
+import { SessionEntity } from '../../api/entities/SessionEntity';
 
 const AUTH_SIGNUP_ENDPOINT = `${getAPIDefinitions().gwServer + "/auth/register"}`;
 
@@ -19,10 +21,11 @@ class SignupPage extends React.Component {
     private usernameRef = React.createRef<FormField>();
     private tosRef = React.createRef<Checkbox>();
     private dobRef = React.createRef<DateField>();
+    private buttonRef = React.createRef<HTMLButtonElement>();
+    private errorBoxRef = React.createRef<FormErrorProvider>();
 
     constructor(props: {}) {
         super(props);
-
         this.processRegister = this.processRegister.bind(this);
     }
 
@@ -31,10 +34,14 @@ class SignupPage extends React.Component {
      */
     async processRegister() {
         // Check if user has accepted the ToS
-        if(!this.tosRef.current.state.checked) {
-            alert("You did not accept the terms and conditions!");
+        if(!this.tosRef.current.state.checked) { 
+            this.errorBoxRef.current.setVisibility(true);
+            this.errorBoxRef.current.setMessage("You did not accept the terms and conditions!")
             return; // TODO use proper dialog
         }
+
+        this.buttonRef.current.disabled = true;
+        this.errorBoxRef.current.setVisibility(false);
 
         const registerReq = await fetch(AUTH_SIGNUP_ENDPOINT, {
             headers: {
@@ -49,8 +56,23 @@ class SignupPage extends React.Component {
             })
         });
 
-        const response: APIResponse<UserEntity> = await registerReq.json();
-        
+        const response: APIResponse<SessionEntity> = await registerReq.json();
+
+        if(!registerReq.ok || !response.success) {
+            // Display error box
+            this.errorBoxRef.current.setVisibility(true);
+            this.errorBoxRef.current.setMessage(response.message || "API Error");
+            this.buttonRef.current.disabled = false;
+            return;
+        }
+
+        // Put session key in localstorage and open client
+        localStorage.setItem("sessKey", response.data.key);
+
+        // Go to app url
+        window.location.href = "/app";
+
+        this.buttonRef.current.disabled = false;
     }
 
     render() {
@@ -63,7 +85,8 @@ class SignupPage extends React.Component {
                 <FormField ident="password" name="Password" type="password" ref={this.passwordRef}></FormField>
                 <DateField name="Date of Birth" ref={this.dobRef}></DateField>
                 <Checkbox label="I agree to the terms and conditions." checked={false} ref={this.tosRef}></Checkbox>
-                <button className="submit" onClick={this.processRegister}>Register</button>
+                <button className="submit" onClick={this.processRegister} ref={this.buttonRef}>Register</button>
+                <FormErrorProvider ref={this.errorBoxRef}></FormErrorProvider>
                 <p>
                     Have an account already? <a href="/login">Log In here</a>
                 </p>
