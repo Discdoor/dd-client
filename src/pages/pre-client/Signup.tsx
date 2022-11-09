@@ -8,7 +8,6 @@ import { getAPIDefinitions } from '../../api/APIProps';
 import Checkbox from '../../components/basic/Checkbox';
 import DateField from '../../components/basic/DateField';
 import { APIResponse } from '../../api/APIResponse';
-import { UserEntity } from '../../api/entities/UserEntity';
 import FormErrorProvider from '../../components/basic/FormErrorProvider';
 import { SessionEntity } from '../../api/entities/SessionEntity';
 

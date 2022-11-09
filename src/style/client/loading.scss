@@ -1,0 +1,38 @@
+@import "../vars.scss";
+
+.page-init {
+    background-color: $colorBg;
+    height: 100%;
+    display: flex;
+
+    // Loading container
+    .container-loading {
+        margin: auto;
+        text-align: center;
+
+        // TEMPORARY LOADING SPINNER
+        // TODO This should be replaced when there is a better design
+        .spinner {
+            background-color: $colorPrimary;
+            height: 64px;
+            width: 64px;
+            animation: 3s spin linear infinite;
+            margin-bottom: 2.5em;
+        }
+
+        .text {
+            font-weight: 400;
+            font-size: 16px;
+        }
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

@@ -1,5 +1,7 @@
+@import "../vars.scss";
+
 .box {
     padding: 25px;
     border-radius: 15px;
-    background: rgb(235, 235, 235);
+    background: $colorBg;
 }

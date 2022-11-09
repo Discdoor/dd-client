@@ -7,11 +7,10 @@ import './style/app.scss';
 import {
     BrowserRouter as Router,
     Routes,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
-  
-    //<LoginPage></LoginPage>
+import IndexPage from './pages/static-main/Index';
+import MainClientPage from './pages/client/Main';
 
 const root = ReactDOM.createRoot(document.body.querySelector(".root"));
 
@@ -19,6 +18,8 @@ root.render(
     <Router>
       <div>
         <Routes>
+          <Route path="/" element=<IndexPage />></Route>
+          <Route path="/app" element=<MainClientPage />></Route>
           <Route path="/login" element=<LoginPage />></Route>
           <Route path="/signup" element=<SignupPage />></Route>
         </Routes>
