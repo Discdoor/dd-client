@@ -9,4 +9,18 @@
     flex-direction: row;
     background-color: $colorBg;
     overflow: hidden;
+    animation: 350ms linear animation-open;
+}
+
+// Opening animation
+@keyframes animation-open {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
