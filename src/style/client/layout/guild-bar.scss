@@ -1,0 +1,15 @@
+@import "../../vars.scss";
+
+.guild-bar {
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: $colorBgTertiary;
+
+    .item {
+        height: 52px;
+        width: 52px;
+        background-color: magenta;
+        cursor: pointer;
+    }
+}

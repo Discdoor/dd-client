@@ -1,0 +1,12 @@
+@import "../../vars.scss";
+
+.ui-tooltip {
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 8px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: $colorBgSecondary;
+}
