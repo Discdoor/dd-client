@@ -1,3 +1,9 @@
 .content-pane>.home-content {
-    
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .ui-tab-ctl-view {
+        flex: 1;
+    }
 }

@@ -1,0 +1,17 @@
+.ui-tab-ctl {
+    display: flex;
+    flex-direction: column;
+
+    // Pages container
+    .pages {
+        // Page button
+        .page {
+            display: inline-block;
+        }
+    }
+
+    // Content container
+    .content {
+        flex: 1;
+    }
+}
