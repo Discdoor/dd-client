@@ -1,0 +1,40 @@
+@import "../../../vars.scss";
+
+.subview.settings .account-settings {
+    .user-box {
+        background-color: $colorBgSecondary;
+        border-radius: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        // Info area
+        .info {
+            display: flex;
+
+            // Avatar
+            .avatar {
+                height: 100px;
+                width: 100px;
+                border-radius: 100%;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            // Fields container
+            .fields {
+                margin-left: 10px;
+                flex: 1;
+
+                .field {
+                    .label {
+                        font-weight: bold;
+                    }
+
+                    &:not(:last-child) {
+                        margin-bottom: 1em;
+                    }
+                }
+            }
+        }
+    }
+}

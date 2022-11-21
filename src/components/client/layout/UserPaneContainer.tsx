@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { getAPIDefinitions } from '../../../api/APIProps';
 import UserEntity from '../../../api/entities/UserEntity';
+import ClientPage from '../../../pages/client/Client';
 import UserPaneAction from './UserPaneAction';
 
 /**
@@ -11,6 +12,11 @@ interface UserPaneProps {
      * The active user for this pane.
      */
     user: UserEntity;
+
+    /**
+     * Client instance reference.
+     */
+    inst: ClientPage;
 }
 
 /**
@@ -33,7 +39,7 @@ class UserPaneContainer extends React.Component<UserPaneProps> {
                     <div className='discrim'>#{this.props.user.discrim}</div>
                 </div>
                 <div className='actions'>
-                    <UserPaneAction icon={getAPIDefinitions().cdn + "/assets/client/icons/24x24/settings.svg"} onclick={()=>{}}></UserPaneAction>
+                    <UserPaneAction icon={getAPIDefinitions().cdn + "/assets/client/icons/24x24/settings.svg"} onclick={()=>this.props.inst.showSettingsUI()}></UserPaneAction>
                 </div>
             </div>
         </div>

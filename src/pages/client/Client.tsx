@@ -6,6 +6,9 @@ import UserEntity from '../../api/entities/UserEntity';
 import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
 import UserPaneContainer from '../../components/client/layout/UserPaneContainer';
+import SettingsSubView from '../../components/client/subview/SettingsSubView';
+import SubView from '../../components/client/subview/SubView';
+import "../../style/client/layout/subview-mgr.scss";
 const clientCfg = require('../../../config/client-cfg.json');
 
 /**
@@ -18,8 +21,9 @@ interface ClientProps {
 /**
  * Represents the current client state.
  */
-interface ClientState {
+export interface ClientState {
     user: UserEntity;
+    activeSubview: React.ReactElement<SubView>;
 }
 
 class ClientPage extends React.Component<ClientProps, ClientState> {
@@ -32,11 +36,12 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
         super(props);
 
         this.state = {
-            user: props.user
+            user: props.user,
+            activeSubview: null
         };
-
-        console.log(this.state.user);
     }
+
+    getDialogManager = ()=>this.dlgMgrRef;
 
     /**
      * Heartbeat check - ensures we are still logged in etc.
@@ -64,6 +69,36 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
         setInterval(()=>this.performHeartbeat(), clientCfg.HB_REFRESH_RATE);
     }
 
+    /**
+     * Sets the active subview.
+     * @param subview The subview to make active.
+     */
+    setActiveSubview(subview: React.ReactElement<SubView>) {
+        if(this.state.activeSubview != null)
+            return; // Wait until subview is done
+
+        this.setState({ activeSubview: subview });
+    }
+
+    /**
+     * Closes the active subview.
+     */
+    closeSubview() {
+        this.setState({ activeSubview: null });
+    }
+
+    /**
+     * Shows the user settings UI.
+     */
+    showSettingsUI() {
+        this.setState({
+            activeSubview: <SettingsSubView inst={this}></SettingsSubView>
+        });
+    }
+
+    /**
+     * Renders the client.
+     */
     render() {
         /*
         Client layout consists of 3 boxes:
@@ -73,8 +108,11 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
         */
         return <div className='client'>
             <DialogManager ref={this.dlgMgrRef}></DialogManager>
+            <div className="subview-container">
+                { this.state.activeSubview ?? '' }
+            </div>
             <GuildBar></GuildBar>
-            <UserPaneContainer user={this.props.user}></UserPaneContainer>
+            <UserPaneContainer inst={this} user={this.props.user}></UserPaneContainer>
         </div>
     }
 }

@@ -23,6 +23,11 @@ export default interface UserEntity {
     username: string;
 
     /**
+     * Phone number.
+     */
+    phone: string;
+
+    /**
      * Account verification status. Only available to client user.
      */
     verifStatus: "VERIFIED_L1"|"VERIFIED_L2"|"AWAIT_VERIF"|"UNVERIFIED";
