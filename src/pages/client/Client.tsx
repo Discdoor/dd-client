@@ -117,7 +117,7 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
     loadLayout(id: string) {
         switch(id) {
             case "home":
-                this.setUserPane(<HomeUserPane></HomeUserPane>);
+                this.setUserPane(<HomeUserPane inst={this}></HomeUserPane>);
                 this.setContentPane(<HomeContentPane></HomeContentPane>);
                 this.setState({ activeLayoutId: id });
                 break;

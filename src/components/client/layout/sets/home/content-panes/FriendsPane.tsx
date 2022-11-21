@@ -3,9 +3,9 @@ import { getAPIDefinitions } from '../../../../../../api/APIProps';
 import ComboTabControl from '../../../../../basic/ComboTabControl';
 
 /**
- * Represents the layout for the server bar.
+ * Friends pane.
  */
-class HomeContentPane extends React.Component<{}> {
+class FriendsPane extends React.Component<{}> {
     constructor(props: {}) {
         super(props);
     }
@@ -22,4 +22,4 @@ class HomeContentPane extends React.Component<{}> {
     }
 }
 
-export default HomeContentPane;
+export default FriendsPane;
