@@ -1,4 +1,5 @@
 @use "./layout/guild-bar.scss";
+@use "./layout/user-pane.scss";
 @import "../vars.scss";
 
 .client {
@@ -7,4 +8,5 @@
     display: flex;
     flex-direction: row;
     background-color: $colorBg;
+    overflow: hidden;
 }

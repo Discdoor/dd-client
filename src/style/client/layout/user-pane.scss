@@ -1,0 +1,62 @@
+@import "../../vars.scss";
+
+.user-pane {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+
+    .container {
+        flex: 1;
+    }
+
+    // User element
+    .user {
+        background-color: $colorBgSecondary;
+        padding: 5px;
+        display: flex;
+
+        // Icon styles
+        .icon {
+            border-radius: 100%;
+            height: 32px;
+            width: 32px;
+            background-size: cover;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        // User name box
+        .name-box {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 12px;
+            margin-top: 2px;
+
+            .username {
+                font-weight: bold;
+            }
+        }
+
+        // Actions container element
+        .actions {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+
+            .action {
+                height: 32px;
+                width: 32px;
+                border-radius: 5px;
+                background-position: center;
+                background-repeat: no-repeat;
+                cursor: pointer;
+
+                // Hover event
+                &:hover {
+                    background-color: $colorBgTertiary;
+                }
+            }
+        }
+    }
+}

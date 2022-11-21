@@ -32,6 +32,8 @@ class MainClientPage extends React.Component<{}, ClientIState> {
             window.location.href = "/login";
         } else {
             // Show the main client component
+            // Add a 1 second timer for cool effect
+            await new Promise((resolve)=>setTimeout(()=>resolve(null), 1000));
             this.setState({
                 page: <ClientPage user={response.data}></ClientPage>,
             });
