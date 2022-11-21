@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { getAPIDefinitions } from '../../../api/APIProps';
 import GuildEntity from '../../../api/entities/GuildEntity';
 import GuildBarItem from './GuildBarItem';
 
@@ -26,7 +27,9 @@ class GuildBar extends React.Component<GuildBarProps> {
 
     render() {
         return <div className='guild-bar'>
-            <GuildBarItem name="Home" icon="" onclick={()=>{}}></GuildBarItem>
+            <GuildBarItem name="Home" icon={getAPIDefinitions().cdn + "/assets/client/gbar/home.svg"} onclick={()=>{}}></GuildBarItem>
+            <div className='separator'></div>
+            <GuildBarItem name="Join Server" icon={getAPIDefinitions().cdn + "/assets/client/gbar/plus.svg"} onclick={()=>{}}></GuildBarItem>
         </div>
     }
 }

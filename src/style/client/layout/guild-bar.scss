@@ -6,10 +6,20 @@
     box-sizing: border-box;
     background-color: $colorBgTertiary;
 
+    .separator {
+        background-color: $colorBg;
+        height: 1px;
+        margin-bottom: 10px;
+    }
+
     .item {
         height: 52px;
         width: 52px;
-        background-color: magenta;
+        margin-bottom: 10px;
+        background-color: $colorBg;
+        background-position: center;
+        background-size: cover;
+        border-radius: 100%;
         cursor: pointer;
     }
 }

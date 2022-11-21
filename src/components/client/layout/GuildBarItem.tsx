@@ -46,7 +46,7 @@ class GuildBarItem extends React.Component<GuildBarItemProps, GuildBarItemState>
         let target = event.target as HTMLDivElement;
         let rect = target.getBoundingClientRect();
 
-        this.targetX = rect.x + rect.width + 10;
+        this.targetX = rect.x + rect.width + 20;
         this.targetY = rect.y + ((rect.height / 2) - (TOOLTIP_HEIGHT / 2));
     }
 
