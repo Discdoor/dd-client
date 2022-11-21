@@ -5,6 +5,8 @@ import { APIResponse } from '../../api/APIResponse';
 import UserEntity from '../../api/entities/UserEntity';
 import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
+import HomeContentPane from '../../components/client/layout/sets/home/HomeContentPane';
+import HomeUserPane from '../../components/client/layout/sets/home/HomeUserPane';
 import UserPaneContainer from '../../components/client/layout/UserPaneContainer';
 import SettingsSubView from '../../components/client/subview/SettingsSubView';
 import SubView from '../../components/client/subview/SubView';
@@ -24,6 +26,8 @@ interface ClientProps {
 export interface ClientState {
     user: UserEntity;
     activeSubview: React.ReactElement<SubView>;
+    activeContentPane: React.ReactElement;
+    activeLayoutId: "home" | string;
 }
 
 class ClientPage extends React.Component<ClientProps, ClientState> {
@@ -32,12 +36,19 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
      */
     private dlgMgrRef = React.createRef<DialogManager>();
 
+    /**
+     * User pane ref.
+     */
+    private userPaneRef = React.createRef<UserPaneContainer>();
+
     constructor(props: ClientProps) {
         super(props);
 
         this.state = {
             user: props.user,
-            activeSubview: null
+            activeSubview: null,
+            activeLayoutId: null,
+            activeContentPane: null
         };
     }
 
@@ -54,19 +65,6 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
             // User is not signed in anymore, redir to login page
             window.location.href = "/login";
         }
-    }
-
-    /**
-     * Client init function.
-     */
-    componentDidMount(): void {
-        // Check if user has a pending verification
-        if(this.state.user.verifStatus == "AWAIT_VERIF")
-            // Show dialog asking for email check
-            this.dlgMgrRef.current.createAlert("Account Verification Needed", "Please check your email for a confirmation link. You will need to verify your account to continue using DiscDoor.");
-    
-        // Start heartbeat routine
-        setInterval(()=>this.performHeartbeat(), clientCfg.HB_REFRESH_RATE);
     }
 
     /**
@@ -97,6 +95,52 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
     }
 
     /**
+     * Sets the active content pane.
+     * @param content The content to use.
+     */
+    setContentPane(content: React.ReactElement) {
+        this.setState({ activeContentPane: content });
+    }
+
+    /**
+     * Sets the active user pane.
+     * @param content The content to use.
+     */
+    setUserPane(content: React.ReactElement) {
+        this.userPaneRef.current.setState({ paneContent: content });
+    }
+
+    /**
+     * Loads a UI layout.
+     * @param id The ID of the layout to load.
+     */
+    loadLayout(id: string) {
+        switch(id) {
+            case "home":
+                this.setUserPane(<HomeUserPane></HomeUserPane>);
+                this.setContentPane(<HomeContentPane></HomeContentPane>);
+                this.setState({ activeLayoutId: id });
+                break;
+        }
+    }
+
+    /**
+     * Client init function.
+     */
+    componentDidMount(): void {
+        // Check if user has a pending verification
+        if(this.state.user.verifStatus == "AWAIT_VERIF")
+            // Show dialog asking for email check
+            this.dlgMgrRef.current.createAlert("Account Verification Needed", "Please check your email for a confirmation link. You will need to verify your account to continue using DiscDoor.");
+    
+        // Start heartbeat routine
+        setInterval(()=>this.performHeartbeat(), clientCfg.HB_REFRESH_RATE);
+
+        // Start at home page
+        this.loadLayout("home");
+    }
+
+    /**
      * Renders the client.
      */
     render() {
@@ -112,7 +156,10 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
                 { this.state.activeSubview ?? '' }
             </div>
             <GuildBar></GuildBar>
-            <UserPaneContainer inst={this} user={this.props.user}></UserPaneContainer>
+            <UserPaneContainer ref={this.userPaneRef} inst={this} user={this.props.user}></UserPaneContainer>
+            <div className='content-pane'>
+                { this.state.activeContentPane ?? '' }
+            </div>
         </div>
     }
 }

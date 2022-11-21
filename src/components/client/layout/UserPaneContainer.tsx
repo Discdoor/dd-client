@@ -17,20 +17,36 @@ interface UserPaneProps {
      * Client instance reference.
      */
     inst: ClientPage;
+
+    /**
+     * Initial pane content.
+     */
+    initialPaneContent?: React.ReactElement;
+}
+
+/**
+ * User pane state.
+ */
+interface UserPaneState {
+    paneContent: React.ReactElement;
 }
 
 /**
  * Represents the user panel layout.
  */
-class UserPaneContainer extends React.Component<UserPaneProps> {
+class UserPaneContainer extends React.Component<UserPaneProps, UserPaneState> {
     constructor(props: UserPaneProps) {
         super(props);
+
+        this.state = {
+            paneContent: props.initialPaneContent
+        }
     }
 
     render() {
         return <div className='user-pane'>
             <div className='container'>
-
+                { this.state.paneContent ?? '' }
             </div>
             <div className='user'>
                 <div className='icon' style={{ backgroundImage: `url(${ getAPIDefinitions().cdn + this.props.user.avatarUrl})` }}></div>

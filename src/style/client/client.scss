@@ -12,6 +12,10 @@
     animation: 350ms linear animation-open;
 }
 
+.client>.content-pane {
+    flex: 1;
+}
+
 // Opening animation
 @keyframes animation-open {
     0% {
