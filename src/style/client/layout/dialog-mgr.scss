@@ -1,0 +1,63 @@
+@import "../../vars.scss";
+
+.dialog-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    // Subcontainer styles    
+    .subcontainer {
+        background: rgba(0, 0, 0, 0.25);
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+
+        // Dialog
+        .dialog {
+            margin: auto;
+            background-color: $colorBg;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0px 0px 10px 5px #0000001a;
+            min-width: 350px;
+            min-height: 135px;
+
+            // Title styles
+            .title {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            // Content container style
+            .content {
+                flex: 1;
+                margin: 1em 0px;
+                box-sizing: border-box;
+            }
+
+            // Button styles
+            .buttons {
+                // Button style
+                >button {
+                    min-width: 85px;
+                    margin-left: 10px;
+
+                    // Remove special styling for non default buttons
+                    &:not(:last-child) {
+                        background-color: transparent;
+                        color: black;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                text-align: right;
+            }
+        }
+    }
+}

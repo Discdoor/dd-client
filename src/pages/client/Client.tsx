@@ -1,5 +1,6 @@
 import * as React from 'react';
 import UserEntity from '../../api/entities/UserEntity';
+import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
 import UserPaneContainer from '../../components/client/layout/UserPaneContainer';
 
@@ -23,6 +24,7 @@ class ClientPage extends React.Component<ClientProps> {
             - content pane
         */
         return <div className='client'>
+            <DialogManager></DialogManager>
             <GuildBar></GuildBar>
             <UserPaneContainer user={this.props.user}></UserPaneContainer>
         </div>
