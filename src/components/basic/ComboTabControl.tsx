@@ -7,7 +7,7 @@ import "../../style/ui/components/combo-tab-ctl.scss";
 interface TabControlPage {
     id: string;
     name: string;
-    content: React.ReactElement;
+    content?: React.ReactElement;
 }
 
 /**
@@ -28,6 +28,8 @@ interface TabControlProps {
     icon: string;
     title: string;
     startingPageId?: string;
+    ontabchanged?: Function;
+    detachedContent?: React.ReactElement;
 }
 
 /**
@@ -38,7 +40,7 @@ interface TabControlState {
 }
 
 /**
- * Represents a checkbox component.
+ * Represents a combo tab control component.
  */
 class ComboTabControl extends React.Component<TabControlProps, TabControlState> {
     /**
@@ -60,6 +62,7 @@ class ComboTabControl extends React.Component<TabControlProps, TabControlState> 
      */
     setActiveTab(id: string) {
         this.setState({ activeTabId: id });
+        this.props.ontabchanged?.call(this, id, this);
     }
 
     render() {
@@ -78,7 +81,7 @@ class ComboTabControl extends React.Component<TabControlProps, TabControlState> 
                 </div>
             </div>
             <div className="content">
-                {(this.state.activeTabId != null) ? this.props.pages.find(x => x.id == this.state.activeTabId).content : ''}
+                {(this.props.detachedContent != null) ? this.props.detachedContent : ((this.state.activeTabId != null) ? this.props.pages.find(x => x.id == this.state.activeTabId).content : '')}
             </div>
         </div>
     }

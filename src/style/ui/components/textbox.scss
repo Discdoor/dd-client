@@ -1,0 +1,14 @@
+.form .field input,
+.ui-textbox {
+    box-sizing: border-box;
+    padding: 3px 5px;
+    line-height: 1.4;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    outline: 0;
+    font-size: 13px;
+
+    &:focus {
+        border-color: #5e5eac;
+    }
+}
