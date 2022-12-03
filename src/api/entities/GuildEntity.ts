@@ -1,7 +1,9 @@
+import { GenericAPIEntity } from "./GenericAPIEntity";
+
 /**
  * API Guild entity.
  */
-export default interface GuildEntity {
+export default interface GuildEntity extends GenericAPIEntity {
     /**
      * Guild icon URL.
      */

@@ -25,7 +25,7 @@ class HomeUserPane extends React.Component<HomeUserPaneProps> {
         return <div className='home-pane'>
             {/* Sub pane controls */}
             <HomeUserPaneSection activeId='friends' name="top" items={[
-                { id: "friends", label: "Friends", onclick: ()=>this.props.inst.setContentPane(<FriendsPane></FriendsPane>), icon: getAPIDefinitions().cdn + "/assets/client/icons/24x24/friends.svg" },
+                { id: "friends", label: "Friends", onclick: ()=>this.props.inst.setContentPane(<FriendsPane inst={this.props.inst}></FriendsPane>), icon: getAPIDefinitions().cdn + "/assets/client/icons/24x24/friends.svg" },
                 { id: "server-discovery", label: "Server Discovery", onclick: ()=>this.props.inst.setContentPane(<ServerDiscoveryPane></ServerDiscoveryPane>), icon: getAPIDefinitions().cdn + "/assets/client/icons/24x24/server-discovery.svg" }
             ]} activateOnClick={true}></HomeUserPaneSection>
             {/* DM list */}

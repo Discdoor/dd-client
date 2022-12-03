@@ -1,0 +1,85 @@
+@import "../../../../vars.scss";
+
+.home-content.friends {
+    // Friends tab content container
+    .ui-tab-ctl-view>.content {
+        padding: 5px;
+        box-sizing: border-box;
+
+        // Users list
+        .user-list {
+            >.item {
+                padding: 8px;
+                box-sizing: border-box;
+                cursor: pointer;
+                display: flex;
+                flex-direction: row;
+                border-radius: 5px;
+                user-select: none;
+                margin-bottom: 5px;
+
+                // Hover state
+                &:hover {
+                    background-color: $colorBgSecondary;
+                }
+
+                // Active state
+                &:active {
+                    background-color: $colorBgTertiary;
+                }
+
+                // Avatar circle
+                >.avatar {
+                    height: 32px;
+                    width: 32px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    border-radius: 100%;
+                    margin-right: 0.5em;
+                }
+
+                // Name element
+                >.name {
+                    flex: 1;
+                    margin-top: auto;
+                    margin-bottom: auto;
+
+                    >.username {
+                        font-weight: 600;
+                    }
+
+                    >.discrim {
+                        display: none;
+                    }
+                }
+
+                &:hover>.name>.discrim {
+                    display: inline;
+                }
+
+                // Buttons box
+                .buttons {
+                    margin-top: auto;
+                    margin-bottom: auto;
+
+                    >.button {
+                        display: inline-block;
+                        height: 30px;
+                        width: 30px;
+                        margin-left: 5px;
+                        border-radius: 100%;
+                        background-color: $colorBgSecondary;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: 20px 20px;
+
+                        &:hover {
+                            background-color: $colorBg;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

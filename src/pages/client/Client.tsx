@@ -2,6 +2,7 @@ import * as React from 'react';
 import { performAPIRequest } from '../../api/APIFetch';
 import { getAPIDefinitions } from '../../api/APIProps';
 import { APIResponse } from '../../api/APIResponse';
+import { APIUserCache } from '../../api/APIUserCache';
 import UserEntity from '../../api/entities/UserEntity';
 import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
@@ -28,6 +29,9 @@ export interface ClientState {
     activeSubview: React.ReactElement<SubView>;
     activeContentPane: React.ReactElement;
     activeLayoutId: "home" | string;
+    caches: {
+        userCache: APIUserCache
+    }
 }
 
 class ClientPage extends React.Component<ClientProps, ClientState> {
@@ -48,7 +52,10 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
             user: props.user,
             activeSubview: null,
             activeLayoutId: null,
-            activeContentPane: null
+            activeContentPane: null,
+            caches: {
+                userCache: new APIUserCache()
+            }
         };
     }
 
@@ -118,7 +125,7 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
         switch(id) {
             case "home":
                 this.setUserPane(<HomeUserPane inst={this}></HomeUserPane>);
-                this.setContentPane(<HomeContentPane></HomeContentPane>);
+                this.setContentPane(<HomeContentPane inst={this}></HomeContentPane>);
                 this.setState({ activeLayoutId: id });
                 break;
         }

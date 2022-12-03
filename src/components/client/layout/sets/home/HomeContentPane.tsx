@@ -1,4 +1,5 @@
 import * as React from 'react';
+import ClientPage from '../../../../../pages/client/Client';
 import "../../../../../style/client/layout/home/home-content.scss";
 import FriendsPane from './content-panes/FriendsPane';
 
@@ -12,8 +13,8 @@ interface HomeContentPaneState {
 /**
  * Represents the layout for the server bar.
  */
-class HomeContentPane extends React.Component<{}, HomeContentPaneState> {
-    constructor(props: {}) {
+class HomeContentPane extends React.Component<{ inst: ClientPage }, HomeContentPaneState> {
+    constructor(props: { inst: ClientPage }) {
         super(props);
 
         this.state = {
@@ -24,7 +25,7 @@ class HomeContentPane extends React.Component<{}, HomeContentPaneState> {
     render() {
         switch(this.state.pane) {
             case "friends":
-                return <FriendsPane></FriendsPane>
+                return <FriendsPane inst={this.props.inst}></FriendsPane>
         }
     }
 }

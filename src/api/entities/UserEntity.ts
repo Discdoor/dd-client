@@ -1,7 +1,9 @@
+import { GenericAPIEntity } from "./GenericAPIEntity";
+
 /**
  * API User entity.
  */
-export default interface UserEntity {
+export default interface UserEntity extends GenericAPIEntity {
     /**
      * User avatar URL.
      */
