@@ -135,7 +135,7 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
                 // Show friends
                 for(let f of v.data)
                     usersList.push(await this.props.inst.state.caches.userCache.fetch(f.targetId));
-                    
+
             } else {
                 // Show some kind of error message here
 
@@ -163,7 +163,7 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
                                 <div className='title'>Add a friend</div>
                                 <div className='desc'>You can add a new friend by entering their tag below.</div>
                                 <div className='input-container'>
-                                    <input className='ui-textbox' type="text"></input>
+                                    <input className='ui-textbox' type="text" placeholder='Username#1234'></input>
                                     <button>Send Request</button>
                                 </div>
                             </div>

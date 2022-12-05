@@ -23,9 +23,9 @@
             }
 
             // Active state
-            &:active {
-                background-color: $colorBgTertiary;
-            }
+            // &:active {
+            //     background-color: $colorBgTertiary;
+            // }
 
             // Avatar circle
             >.avatar {
@@ -90,7 +90,33 @@
     div>.top {
         // Add user bar style
         &.pending {
+            // Request box style
+            .request-box {
+                padding: 15px;
+                box-sizing: border-box;
+                border-bottom: 1px solid #d5d5d5;
+                margin-bottom: 5px;
 
+                .title {
+                    font-weight: bold;
+                    font-size: 16px;
+                    margin-bottom: 0.5rem;
+                }
+
+                .input-container {
+                    margin-top: 0.5rem;
+                    display: flex;
+
+                    input {
+                        flex: 1;
+                        margin-right: 5px;
+                    }
+
+                    button {
+                        padding: 8px 12px;
+                    }
+                }
+            }
         }
     }
 }
