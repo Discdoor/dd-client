@@ -16,6 +16,6 @@ To run this for production locally, run the following commands.
 ### Production (dockerized, preferred)
 Simply create an image from the Dockerfile included here.
 
-To do this, run `docker build -t dd-client.` in the repository root.
+To do this, run `docker build -t dd-client .` in the repository root.
 
 Then you can create a container based on this image.
