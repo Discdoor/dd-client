@@ -45,6 +45,6 @@ jobs:
         # https://github.com/actions/setup-node#caching-packages-dependencies
         cache-dependency-path: "**/package-lock.json"
     - run: npm ci
-    - run: npm run build --if-present
+    - run: npm run build
     # no testing framework for now
     # - run: npm test
