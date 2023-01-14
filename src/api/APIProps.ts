@@ -14,5 +14,5 @@ interface APIDefinitions {
  * Returns a list of APIs.
  */
 export function getAPIDefinitions() : APIDefinitions {
-    return require('../../config/apis.json');
+    return require('../../data/apis.json');
 }

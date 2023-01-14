@@ -12,7 +12,7 @@ import UserPaneContainer from '../../components/client/layout/UserPaneContainer'
 import SettingsSubView from '../../components/client/subview/SettingsSubView';
 import SubView from '../../components/client/subview/SubView';
 import "../../style/client/layout/subview-mgr.scss";
-const clientCfg = require('../../../config/client-cfg.json');
+const clientCfg = require('../../../data/client-cfg.json');
 
 /**
  * Client properties.
