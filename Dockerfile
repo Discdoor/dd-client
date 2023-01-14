@@ -7,6 +7,6 @@ COPY package*.json ./
 COPY . ./
 RUN npm install
 RUN npm install -g typescript
-EXPOSE 6144
+EXPOSE 4096
 
 CMD [ "npm", "run", "serve" ]
