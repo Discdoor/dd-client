@@ -10,4 +10,4 @@ RUN npm install -g typescript
 RUN chmod +x server.sh
 EXPOSE 6144
 
-CMD [ "server.sh" ]
+CMD [ "npm", "run", "serve" ]
