@@ -12,7 +12,7 @@ import { SessionEntity } from '../../api/entities/SessionEntity';
 const AUTH_LOGIN_ENDPOINT = `${getAPIDefinitions().gwServer + "/auth/login"}`;
 
 /**
- * The user login page.
+ * The user login page. 
  */
 class LoginPage extends React.Component {
     // Refs
