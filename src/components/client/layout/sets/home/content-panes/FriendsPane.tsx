@@ -91,7 +91,7 @@ class UserList extends React.Component<UserListProps, UserListState> {
         return <div className='user-list'>
             {(this.state.users.length == 0) ? (()=> {
                 if(this.state.filter == "friend")
-                    return <div className='bg-text'>You have no friends!!! 😂😂😂</div>
+                    return <div className='bg-text'>You have no friends.</div>
                 else if(this.state.filter == "block")
                     return <div className='bg-text'>
                         No users have currently been blocked.<br></br>
