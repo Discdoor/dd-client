@@ -7,10 +7,7 @@ COPY package*.json ./
 COPY . ./
 RUN npm install
 RUN npm install -g typescript
-RUN chmod +x /usr/src/client/docker/start.sh
+RUN npm run build
 EXPOSE 6144
 
-# Setup nginx
-FROM nginx
-COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
-CMD [ "/usr/src/client/docker/start.sh" ]
+CMD [ "npm", "run", "start" ]
