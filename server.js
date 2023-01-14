@@ -16,6 +16,6 @@ app.use((req, res, next) => {
 });  
 
 // Start server
-app.listen(config.http.port, '0.0.0.0', () => {
+app.listen(config.http.port, () => {
     console.log(`Client server listening at ${config.http.port}!`);
 });
