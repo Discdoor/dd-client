@@ -34,6 +34,7 @@ jobs:
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
+      working-directory: ./
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       with:
