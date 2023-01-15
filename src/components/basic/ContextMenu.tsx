@@ -119,7 +119,7 @@ function destroyAllMenus() {
 }
 
 document.body.addEventListener('mouseup', ()=>{
-    if(activeContainer.state.menus.length > 0)
+    if(activeContainer && activeContainer.state.menus.length > 0)
         destroyAllMenus();
 })
 
