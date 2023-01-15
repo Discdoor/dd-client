@@ -60,6 +60,24 @@ async function removeFrq(userId: string) {
         UIState.updateFriendUIElements();
 }
 
+async function blockUser(userId: string) {
+    const blockResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/block`, "POST", {
+        target: userId
+    });
+
+    if(blockResp.success) 
+        UIState.updateFriendUIElements();
+}
+
+async function removeFriend(userId: string) {
+    const blockResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/remove`, "POST", {
+        target: userId
+    });
+
+    if(blockResp.success) 
+        UIState.updateFriendUIElements();
+}
+
 /**
  * Shows the manage friend menu.
  * @param friendId The ID of the friend to show a menu for.
@@ -69,12 +87,17 @@ function showManageFriendMenu(e: React.MouseEvent, friendId: string) {
         {
             id: "block",
             label: "Block",
-            onclick: ()=>alert("blocked!")
+            onclick: ()=>{
+                blockUser(friendId);
+            }
         },
         {
             id: "remove-friend",
             label: "Remove Friend",
-            onclick: ()=>alert("remove friend")
+            onclick: ()=>{
+                alert(friendId);
+                removeFriend(friendId);
+            }
         }
     ], e.pageX - 150, e.pageY);
 }
