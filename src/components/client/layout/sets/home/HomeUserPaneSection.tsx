@@ -20,6 +20,11 @@ interface HomeUserPaneItem {
      * Onclick listener.
      */
     onclick: React.MouseEventHandler<HTMLDivElement>;
+
+    /**
+     * Badge counter.
+     */
+    badgeCounter?: number;
 }
 
 /**
@@ -71,6 +76,7 @@ class HomeUserPaneSection extends React.Component<HomeUserPaneSectionProps, Home
                     }}>
                         <div className='icon' style={{ backgroundImage: `url(${x.icon})` }}></div>
                         <div className='label'>{x.label}</div>
+                        { x.badgeCounter > 0 ? <div className='counter'>{x.badgeCounter}</div> : '' }
                 </div>)
             }
         </div>

@@ -1,4 +1,5 @@
 import { io, Socket } from "socket.io-client";
+import { registerRelationshipEvents } from "./events/RelationshipEvents";
 
 /**
  * Core socket events (client -> server)
@@ -28,7 +29,7 @@ export class GatewayWebsocketClient {
     /**
      * Underlying socket.
      */
-    private socket: Socket;
+    public socket: Socket;
 
     /**
      * Creates a new gateway websocket client with the specified URL.
@@ -44,6 +45,8 @@ export class GatewayWebsocketClient {
      * Register socket events.
      */
     registerEvents() {
+        registerRelationshipEvents(this);
+        
         // Disconnect event
         this.socket.on('disconnect', () => {
             // Handle disconnect

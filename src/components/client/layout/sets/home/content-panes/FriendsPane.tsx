@@ -3,11 +3,12 @@ import { performAPIRequest } from '../../../../../../api/APIFetch';
 import { getAPIDefinitions } from '../../../../../../api/APIProps';
 import { APIUserCache } from '../../../../../../api/APIUserCache';
 import CachedUserEntity from '../../../../../../api/entities/CachedUserEntity';
-import { UserRelationship } from '../../../../../../api/entities/UserRelationEntity';
+import { RelationshipTypeEnum, UserRelationship } from '../../../../../../api/entities/UserRelationEntity';
 import ClientPage from '../../../../../../pages/client/Client';
 import ComboTabControl from '../../../../../basic/ComboTabControl';
 import '../../../../../../style/client/layout/home/pane/friends.scss';
 import { CommonRegExp } from '../../../../../../util/Regex';
+import { ClientContext, UIState } from '../../../../../../client/ClientContext';
 
 /**
  * Friends page instance props.
@@ -20,9 +21,48 @@ interface FriendsPaneProps {
 }
 
 /**
+ * Accepts a friend request.
+ * @param userId The user to accept the request from.
+ */
+async function acceptFrq(userId: string) {
+    const frqResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/accept`, "POST", {
+        target: userId
+    });
+
+    if(frqResp.success) 
+        UIState.updateFriendUIElements();
+}
+
+/**
+ * Ignores a friend request.
+ * @param userId The user to ignore the request from.
+ */
+async function denyFrq(userId: string) {
+    const frqResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/deny`, "POST", {
+        target: userId
+    });
+
+    if(frqResp.success) 
+        UIState.updateFriendUIElements();
+}
+
+/**
+ * Removes outgoing friend request.
+ * @param userId The user to ignore the request from.
+ */
+async function removeFrq(userId: string) {
+    const frqResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/remove-pending`, "POST", {
+        target: userId
+    });
+
+    if(frqResp.success) 
+        UIState.updateFriendUIElements();
+}
+
+/**
  * Represents a friend list item.
  */
-const FriendUserListItem = (props: { avatarUrl: string, name: string, discrim: string, filter: "friend"|"pending"|"block"|string }) => {
+const FriendUserListItem = (props: { avatarUrl: string, name: string, discrim: string, filter: "friend"|"pending"|"block"|string, relType: RelationshipTypeEnum, targetUserId: string }) => {
     return <div className='item'>
             <div className='avatar' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + props.avatarUrl})` }}></div>
             <div className='name'>
@@ -40,9 +80,17 @@ const FriendUserListItem = (props: { avatarUrl: string, name: string, discrim: s
                                 <div key="pill" className='button pill-menu' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/more.svg"})` }}></div>
                             ];
                         case "pending":
-                            return [
-                                <div key="remove" className='button remove' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/dlg-close.svg"})` }}></div>
-                            ];
+                            if(props.relType == RelationshipTypeEnum.incoming) {
+                                return [
+                                    <div key="accept" onClick={()=>acceptFrq(props.targetUserId)} className='button remove' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/check.svg"})` }}></div>,
+                                    <div key="remove" onClick={()=>denyFrq(props.targetUserId)} className='button remove' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/dlg-close.svg"})` }}></div>
+                                ];
+                            } else if(props.relType == RelationshipTypeEnum.outgoing) {
+                                return [
+                                    <div key="remove" onClick={()=>removeFrq(props.targetUserId)} className='button remove' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/dlg-close.svg"})` }}></div>
+                                ];
+                            }
+                            
                         case "block":
                             return [
                                 <div key="remove" className='button remove' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/dlg-close.svg"})` }}></div>
@@ -66,6 +114,11 @@ interface UserListProps {
      * User cache to get user info from.
      */
     userCache: APIUserCache;
+
+    /**
+     * User relationships.
+     */
+    relations: UserRelationship[];
 }
 
 /**
@@ -74,6 +127,7 @@ interface UserListProps {
 interface UserListState {
     users: CachedUserEntity[];
     filter: string;
+    relations: UserRelationship[];
 }
 
 class UserList extends React.Component<UserListProps, UserListState> {
@@ -82,7 +136,8 @@ class UserList extends React.Component<UserListProps, UserListState> {
         
         this.state = {
             users: [],
-            filter: this.props.filter
+            filter: this.props.filter,
+            relations: []
         };
     }
 
@@ -106,7 +161,7 @@ class UserList extends React.Component<UserListProps, UserListState> {
                 else
                     return <div className='bg-text'>Nothing found :(</div>
             })()
-            : this.state.users.map(x => <FriendUserListItem key={x.id} name={x.username} discrim={x.discrim} avatarUrl={x.avatarUrl} filter={this.state.filter}></FriendUserListItem>)}
+            : this.state.users.map(x => <FriendUserListItem targetUserId={x.id} relType={this.state.relations.find(y => y.targetId == x.id).type} key={x.id} name={x.username} discrim={x.discrim} avatarUrl={x.avatarUrl} filter={this.state.filter}></FriendUserListItem>)}
         </div>
     }
 }
@@ -147,8 +202,16 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
 
             }
 
-            this.userListRef.current.setState({ filter: this.state.filter, users: usersList });
+            this.userListRef.current.setState({ filter: this.state.filter, users: usersList, relations: v.data });
         });
+    }
+
+    componentDidMount(): void {
+        ClientContext.uiStates.friendsPane = this;
+    }
+
+    componentWillUnmount(): void {
+        ClientContext.uiStates.friendsPane = null; 
     }
 
     componentDidUpdate(prevProps: Readonly<FriendsPaneProps>, prevState: Readonly<FriendsPaneState>, snapshot?: any): void {
@@ -166,7 +229,15 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
         // Process addition of frq
         this.setState({ ...this.state, ...{ frqProcessing: true } });
         
-        this.props.inst.getDialogManager().current.createAlert("Success", "Your friend request has been sent!");
+        // Send frq
+        const frqResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/add`, "POST", {
+            tag: this.requestBoxRef.current.value
+        });
+
+        if(!frqResp.success)
+            this.props.inst.getDialogManager().current.createAlert("Error", "This user cannot be added.");
+        else
+            this.props.inst.getDialogManager().current.createAlert("Success", "Your friend request has been sent!");        
 
         this.setState({ ...this.state, ...{ frqProcessing: false } });        
     }
@@ -193,7 +264,7 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
                             return '';
                     })()}
                 </div>
-                <UserList ref={this.userListRef} userCache={this.props.inst.state.caches.userCache} filter={this.state.filter}></UserList>
+                <UserList ref={this.userListRef} userCache={this.props.inst.state.caches.userCache} filter={this.state.filter} relations={[]}></UserList>
             </div>}
             ontabchanged={(v: string)=>{
                 switch(v) {

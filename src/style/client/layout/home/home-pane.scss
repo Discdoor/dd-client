@@ -30,6 +30,14 @@
             vertical-align: middle;
         }
 
+        .counter {
+            float: right;
+            padding: 5px;
+            color: white;
+            background-color: $colorPrimary;
+            border-radius: 5px;
+        }
+
         &:hover,
         &.active {
             background-color: $colorBgQuaternary;
