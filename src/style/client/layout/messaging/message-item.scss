@@ -1,0 +1,46 @@
+.home-content.messaging {
+    .message-item {
+        padding: 5px 18px;
+        padding-bottom: 0;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+
+        .left {
+            .avatar {
+                height: 40px;
+                width: 40px;
+                border-radius: 100%;
+                background-size: contain;
+                background-repeat: no-repeat;
+                margin-right: 10px;
+            }
+        }
+
+        // right (content section)
+        .right {
+            flex: 1;
+
+            // message header
+            .header {
+                margin-bottom: 5px;
+                
+                .date,
+                .username {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+
+                .username {
+                    font-weight: 500;
+                }
+
+                .date {
+                    color: gray;
+                    font-size: smaller;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+}

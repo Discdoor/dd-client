@@ -9,6 +9,7 @@ import { APIUserCache } from "../../../../../../api/APIUserCache";
 import { ClientInstance } from "../../../../../../pages/client/Client";
 import { DMUserInfo } from "./DMUserInfo";
 import { MessageItem } from "./MessageItem";
+import { ClientContext } from "../../../../../../client/ClientContext";
 
 interface MessagingPaneProps {
     /**
@@ -60,6 +61,10 @@ interface MessagingPaneState {
 }
 
 export class MessagingPane extends React.Component<MessagingPaneProps, MessagingPaneState> {
+    private msgBoxRef = React.createRef<HTMLInputElement>();
+    private msgViewRef = React.createRef<HTMLDivElement>();
+    private endElRef = React.createRef<HTMLDivElement>();
+
     constructor(props: MessagingPaneProps) {
         super(props);
 
@@ -105,7 +110,7 @@ export class MessagingPane extends React.Component<MessagingPaneProps, Messaging
                 messages: [...this.state.messages, ...messages],
                 currentPage: this.state.currentPage + ((page != null) ? page : 0)
             }
-        })
+        });
     }
 
     /**
@@ -139,9 +144,14 @@ export class MessagingPane extends React.Component<MessagingPaneProps, Messaging
     }
 
     async componentDidMount() {
+        ClientContext.uiStates.messagingPane = this;
         // Get needed state for users
         await this.prepare();
         await this.loadMessages();
+    }
+
+    componentWillUnmount(): void {
+        ClientContext.uiStates.messagingPane = null;
     }
 
     /**
@@ -152,6 +162,27 @@ export class MessagingPane extends React.Component<MessagingPaneProps, Messaging
             const content = (e.target as HTMLInputElement).value;
             this.submitMessage(content);
         }
+    }
+
+    /**
+     * Pushes a new message object.
+     * @param m The message to push.
+     */
+    async pushMessage(m: any, switchSubmitState: boolean = false) {
+        const msg = {
+            ...m,
+            ...{
+                author: await APIUserCache.fetch(m.authorId)
+            }
+        };
+
+        this.setState({
+            ...this.state,
+            ...{
+                submitting: false,
+                messages: [...[msg], ...this.state.messages]
+            }
+        });
     }
 
     /**
@@ -173,12 +204,19 @@ export class MessagingPane extends React.Component<MessagingPaneProps, Messaging
         });
 
         if(msgSendRequest.success) {
-            
+            await this.pushMessage(msgSendRequest.data, true);
+            this.msgBoxRef.current.value = "";
+            this.msgBoxRef.current.focus();
         } else {
             // Show red thingy or something
             console.error(`Could not send message: ${msgSendRequest.message}`);
             return;
         }
+    }
+
+    componentDidUpdate(prevProps: Readonly<MessagingPaneProps>, prevState: Readonly<MessagingPaneState>, snapshot?: any): void {
+        if(this.endElRef.current)
+            this.endElRef.current.scrollIntoView();
     }
 
     render() {
@@ -204,26 +242,27 @@ export class MessagingPane extends React.Component<MessagingPaneProps, Messaging
                     return '';
                 })()
             }
-            <div className="messages-list">
+            <div className="messages-list" ref={this.msgViewRef}>
             {
                 (()=> {
                     const messageObjects: React.ReactElement[] = [];
 
-                    for(let msg of this.state.messages) {
+                    for(let msg of this.state.messages.reverse()) {
                         const m = msg as any;
                         messageObjects.push(<MessageItem key={m.id} date={m.dateSent} content={m.content} author={m.author}></MessageItem>);
                     }
 
                     return [
                         <DMUserInfo key="dmui" user={this.state.recipients.find(x => x.id == this.props.initialArgs[1])}></DMUserInfo>,
-                        ...messageObjects
+                        ...messageObjects,
+                        <div className="end" key="end" ref={this.endElRef}></div>
                     ];
                 })()
             }
             </div>
             <div className="input-footer">
                 <div className="text-box">
-                    <input className="input" onKeyDown={this.onMsgBoxKeyDown} placeholder={"Message @" + (() => {
+                    <input tabIndex={-1} ref={this.msgBoxRef} className="input" onKeyDown={this.onMsgBoxKeyDown} placeholder={"Message @" + (() => {
                         let targetRecp = "<unknown>";
 
                         this.state.recipients.forEach((v) => {

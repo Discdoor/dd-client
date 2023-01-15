@@ -13,6 +13,8 @@
 }
 
 .home-content.messaging {
+    overflow: hidden;
+    
     // Use header component of tabview
     .ui-tab-ctl-view {
         >.content {
@@ -27,12 +29,14 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        overflow-x: auto;
     }
 
     // Input box style
     .input-footer {
         padding: 18px;
         box-sizing: border-box;
+        overflow: hidden;
 
         .text-box {
             width: 100%;

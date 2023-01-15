@@ -1,5 +1,6 @@
 import FriendsPane from "../components/client/layout/sets/home/content-panes/FriendsPane";
 import HomeUserPane from "../components/client/layout/sets/home/HomeUserPane";
+import { MessagingPane } from "../components/client/layout/sets/home/messaging/MessagingPane";
 
 /**
  * Represents the current client context.
@@ -7,7 +8,8 @@ import HomeUserPane from "../components/client/layout/sets/home/HomeUserPane";
 export const ClientContext = {
     uiStates: {
         friendsPane: null as FriendsPane,
-        homeUserPane: null as HomeUserPane
+        homeUserPane: null as HomeUserPane,
+        messagingPane: null as MessagingPane
     }
 }
 

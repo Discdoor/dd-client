@@ -104,7 +104,6 @@ function showManageFriendMenu(e: React.MouseEvent, friendId: string) {
             id: "remove-friend",
             label: "Remove Friend",
             onclick: ()=>{
-                alert(friendId);
                 removeFriend(friendId);
             }
         }
