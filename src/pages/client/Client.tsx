@@ -4,6 +4,7 @@ import { getAPIDefinitions } from '../../api/APIProps';
 import { APIResponse } from '../../api/APIResponse';
 import { APIUserCache } from '../../api/APIUserCache';
 import UserEntity from '../../api/entities/UserEntity';
+import { GatewayWebsocketClient } from '../../client/GatewayWebsocketClient';
 import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
 import HomeContentPane from '../../components/client/layout/sets/home/HomeContentPane';
@@ -19,6 +20,7 @@ const clientCfg = require('../../../data/client-cfg.json');
  */
 interface ClientProps {
     user: UserEntity;
+    ws: GatewayWebsocketClient;
 }
 
 /**

@@ -5,6 +5,11 @@ interface APIDefinitions {
     gwServer: string;
 
     /**
+     * Gateway websocket URL.
+     */
+    gwServerWS: string;
+
+    /**
      * CDN server URL.
      */
     cdn: string;

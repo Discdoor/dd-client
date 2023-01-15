@@ -7,6 +7,7 @@ import { UserRelationship } from '../../../../../../api/entities/UserRelationEnt
 import ClientPage from '../../../../../../pages/client/Client';
 import ComboTabControl from '../../../../../basic/ComboTabControl';
 import '../../../../../../style/client/layout/home/pane/friends.scss';
+import { CommonRegExp } from '../../../../../../util/Regex';
 
 /**
  * Friends page instance props.
@@ -112,6 +113,7 @@ class UserList extends React.Component<UserListProps, UserListState> {
 
 interface FriendsPaneState {
     filter: string;
+    frqProcessing: boolean;
 }
 
 /**
@@ -119,13 +121,17 @@ interface FriendsPaneState {
  */
 class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
     private userListRef = React.createRef<UserList>();
+    private requestBoxRef = React.createRef<HTMLInputElement>();
 
     constructor(props: FriendsPaneProps) {
         super(props);
 
         this.state = {
-            filter: "friend"
+            filter: "friend",
+            frqProcessing: false
         };
+
+        this.sendFriendRequest = this.sendFriendRequest.bind(this);
     }
 
     refreshList() {
@@ -149,6 +155,22 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
         this.refreshList();
     }
 
+    /**
+     * Sends the friend request.
+     */
+    async sendFriendRequest() {
+        // Check if username is valid
+        if(!CommonRegExp.username.test(this.requestBoxRef.current.value))
+            return this.props.inst.getDialogManager().current.createAlert("Error", "The specified username is not a valid username.\n\nUsers can only be identified with the exact name and discriminant.");
+
+        // Process addition of frq
+        this.setState({ ...this.state, ...{ frqProcessing: true } });
+        
+        this.props.inst.getDialogManager().current.createAlert("Success", "Your friend request has been sent!");
+
+        this.setState({ ...this.state, ...{ frqProcessing: false } });        
+    }
+
     render() {
         return <div className='home-content friends'>
             <ComboTabControl title="Friends" icon={getAPIDefinitions().cdn + "/assets/client/icons/24x24/friends.svg"} startingPageId='friend' pages={[
@@ -163,8 +185,8 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
                                 <div className='title'>Add a friend</div>
                                 <div className='desc'>You can add a new friend by entering their tag below.</div>
                                 <div className='input-container'>
-                                    <input className='ui-textbox' type="text" placeholder='Username#1234'></input>
-                                    <button>Send Request</button>
+                                    <input className='ui-textbox' type="text" placeholder='Username#1234' ref={this.requestBoxRef}></input>
+                                    <button onClick={this.sendFriendRequest} disabled={this.state.frqProcessing}>Send Request</button>
                                 </div>
                             </div>
                         } else

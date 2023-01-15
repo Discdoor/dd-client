@@ -5,6 +5,7 @@ import "../../style/client/client.scss";
 import InitPage from './Init';
 import ClientPage from './Client';
 import UserEntity from '../../api/entities/UserEntity';
+import { GatewayWebsocketClient } from '../../client/GatewayWebsocketClient';
 
 interface ClientIState {
     /**
@@ -30,14 +31,25 @@ class MainClientPage extends React.Component<{}, ClientIState> {
             // Send user back to login page - login failed
             localStorage.removeItem("sessKey");
             window.location.href = "/login";
-        } else {
-            // Show the main client component
-            // Add a 1 second timer for cool effect
-            //await new Promise((resolve)=>setTimeout(()=>resolve(null), 1000));
-            this.setState({
-                page: <ClientPage user={response.data}></ClientPage>,
-            });
+            return;
         }
+
+        // Establish WS connection
+        const wsClient = new GatewayWebsocketClient(getAPIDefinitions().gwServerWS);
+
+        // Check connection
+        const wsBegun = await wsClient.begin();
+
+        if(!wsBegun) {
+            // Inform user connection has failed
+            alert("Web socket connection has failed - client has not been authenticated.");
+            return;
+        }
+
+        // Show the client.
+        this.setState({
+            page: <ClientPage ws={wsClient} user={response.data}></ClientPage>,
+        });
     }
 
     render() {
