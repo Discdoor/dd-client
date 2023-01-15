@@ -7,12 +7,28 @@ import { GatewayWebsocketClient } from "../GatewayWebsocketClient";
  * @param client The client instance.
  */
 export function registerRelationshipEvents(client: GatewayWebsocketClient) {
+    // On incoming request
     client.socket.on('friend request incoming', (user) => {
         console.log(`Friend request received from ${user.username}#${user.discrim}`);
         // Play notification sound
         new Audio(getAPIDefinitions().cdn + "/assets/client/sounds/notification.mp3").play();
 
         // Update UI relevant to friends
+        UIState.updateFriendUIElements();
+    });
+
+    // When a request was successfully accepted
+    client.socket.on('friend accept successful', (user) => UIState.updateFriendUIElements());
+    client.socket.on('friend retract successful', (user) => UIState.updateFriendUIElements());
+    client.socket.on('friend deny successful', (user) => UIState.updateFriendUIElements());
+    client.socket.on('friend request retracted', (user) => UIState.updateFriendUIElements());
+
+    // When the users request was accepted by the target user
+    client.socket.on('friend request accepted', (user) => {
+        // Play notification sound
+        new Audio(getAPIDefinitions().cdn + "/assets/client/sounds/notification.mp3").play();
+
+        // Simply update the UI
         UIState.updateFriendUIElements();
     });
 }

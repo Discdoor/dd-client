@@ -9,6 +9,7 @@ import ComboTabControl from '../../../../../basic/ComboTabControl';
 import '../../../../../../style/client/layout/home/pane/friends.scss';
 import { CommonRegExp } from '../../../../../../util/Regex';
 import { ClientContext, UIState } from '../../../../../../client/ClientContext';
+import { ContextMenuCreator } from '../../../../../basic/ContextMenu';
 
 /**
  * Friends page instance props.
@@ -51,12 +52,31 @@ async function denyFrq(userId: string) {
  * @param userId The user to ignore the request from.
  */
 async function removeFrq(userId: string) {
-    const frqResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/remove-pending`, "POST", {
+    const frqResp = await performAPIRequest(getAPIDefinitions().gwServer + `/user/relations/retract`, "POST", {
         target: userId
     });
 
     if(frqResp.success) 
         UIState.updateFriendUIElements();
+}
+
+/**
+ * Shows the manage friend menu.
+ * @param friendId The ID of the friend to show a menu for.
+ */
+function showManageFriendMenu(e: React.MouseEvent, friendId: string) {
+    ContextMenuCreator.createMenu([
+        {
+            id: "block",
+            label: "Block",
+            onclick: ()=>alert("blocked!")
+        },
+        {
+            id: "remove-friend",
+            label: "Remove Friend",
+            onclick: ()=>alert("remove friend")
+        }
+    ], e.pageX - 150, e.pageY);
 }
 
 /**
@@ -77,7 +97,7 @@ const FriendUserListItem = (props: { avatarUrl: string, name: string, discrim: s
                         case "friend":
                             return [
                                 <div key="msg" className='button msg' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/message.svg"})` }}></div>,
-                                <div key="pill" className='button pill-menu' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/more.svg"})` }}></div>
+                                <div key="pill" className='button pill-menu' onClick={(e)=>showManageFriendMenu(e, props.targetUserId)} style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/more.svg"})` }}></div>
                             ];
                         case "pending":
                             if(props.relType == RelationshipTypeEnum.incoming) {

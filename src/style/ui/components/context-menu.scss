@@ -1,0 +1,28 @@
+@import "../../vars.scss";
+
+.menu-layer {
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.ui-context-menu {
+    position: fixed;
+    background: $colorBg;
+    z-index: 101;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px 0px #b9b9b9;
+    cursor: pointer;
+
+    >.option {
+        padding: 10px;
+        border-radius: 5px;
+
+        &:hover {
+            background: $colorPrimary;
+            color: white;
+        }
+    }
+}

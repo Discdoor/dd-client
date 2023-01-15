@@ -5,6 +5,7 @@ import { APIResponse } from '../../api/APIResponse';
 import { APIUserCache } from '../../api/APIUserCache';
 import UserEntity from '../../api/entities/UserEntity';
 import { GatewayWebsocketClient } from '../../client/GatewayWebsocketClient';
+import { ContextMenuContainer } from '../../components/basic/ContextMenu';
 import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
 import HomeContentPane from '../../components/client/layout/sets/home/HomeContentPane';
@@ -161,6 +162,7 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
         */
         return <div className='client'>
             <DialogManager ref={this.dlgMgrRef}></DialogManager>
+            <ContextMenuContainer></ContextMenuContainer>
             <div className="subview-container">
                 { this.state.activeSubview ?? '' }
             </div>
