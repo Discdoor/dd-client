@@ -4,7 +4,7 @@ import { getAPIDefinitions } from '../../../../../../api/APIProps';
 import { APIUserCache } from '../../../../../../api/APIUserCache';
 import CachedUserEntity from '../../../../../../api/entities/CachedUserEntity';
 import { RelationshipTypeEnum, UserRelationship } from '../../../../../../api/entities/UserRelationEntity';
-import ClientPage from '../../../../../../pages/client/Client';
+import ClientPage, { ClientInstance } from '../../../../../../pages/client/Client';
 import ComboTabControl from '../../../../../basic/ComboTabControl';
 import '../../../../../../style/client/layout/home/pane/friends.scss';
 import { CommonRegExp } from '../../../../../../util/Regex';
@@ -78,6 +78,15 @@ async function removeFriend(userId: string) {
         UIState.updateFriendUIElements();
 }
 
+async function beginDm(userId: string) {
+    const dmResp = await performAPIRequest<{ id: string }>(getAPIDefinitions().gwServer + `/channels/dm/${userId}`, "POST", {});
+
+    if(dmResp.success) 
+        ClientInstance.loadLayout("dm", [dmResp.data.id, userId])
+    else
+        console.error(`Cannot start DM with user ${userId}: ${dmResp.message}`);
+}
+
 /**
  * Shows the manage friend menu.
  * @param friendId The ID of the friend to show a menu for.
@@ -119,7 +128,7 @@ const FriendUserListItem = (props: { avatarUrl: string, name: string, discrim: s
                             return [];
                         case "friend":
                             return [
-                                <div key="msg" className='button msg' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/message.svg"})` }}></div>,
+                                <div key="msg" onClick={()=>beginDm(props.targetUserId)} className='button msg' style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/message.svg"})` }}></div>,
                                 <div key="pill" className='button pill-menu' onClick={(e)=>showManageFriendMenu(e, props.targetUserId)} style={{ backgroundImage: `url(${getAPIDefinitions().cdn + "/assets/client/icons/24x24/more.svg"})` }}></div>
                             ];
                         case "pending":
@@ -238,7 +247,7 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
             if(v.success) {
                 // Show friends
                 for(let f of v.data)
-                    usersList.push(await this.props.inst.state.caches.userCache.fetch(f.targetId));
+                    usersList.push(await APIUserCache.fetch(f.targetId));
 
             } else {
                 // Show some kind of error message here
@@ -251,6 +260,7 @@ class FriendsPane extends React.Component<FriendsPaneProps, FriendsPaneState> {
 
     componentDidMount(): void {
         ClientContext.uiStates.friendsPane = this;
+        this.refreshList();
     }
 
     componentWillUnmount(): void {

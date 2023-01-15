@@ -1,0 +1,62 @@
+@import "../../../vars.scss";
+
+.home-content.loading {
+    .spinner {
+        height: 56px;
+        width: 56px;
+        border: 4px solid $colorPrimary;
+        border-radius: 100%;
+        border-right-color: transparent;
+        margin: auto;
+        animation: spin 1s linear infinite;
+    }
+}
+
+.home-content.messaging {
+    // Use header component of tabview
+    .ui-tab-ctl-view {
+        >.content {
+            display: none;
+        }
+
+        flex: revert;
+    }
+
+    // Messaging layout
+    .messages-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    // Input box style
+    .input-footer {
+        padding: 18px;
+        box-sizing: border-box;
+
+        .text-box {
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 8px;
+            padding: 10px;
+            background: $colorBgSecondary;
+
+            // Input field itself
+            >input {
+                appearance: none;
+                width: 100%;
+                box-sizing: border-box;
+                background-color: transparent;
+                outline: none;
+                border: none;
+                line-height: 1.8;
+            }
+        }
+    }
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

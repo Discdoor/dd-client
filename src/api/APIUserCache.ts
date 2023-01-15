@@ -3,13 +3,13 @@ import { getAPIDefinitions } from "./APIProps";
 import CachedUserEntity from "./entities/CachedUserEntity";
 
 export class APIUserCache {
-    private cache: CachedUserEntity[] = [];
+    private static cache: CachedUserEntity[] = [];
 
     /**
      * Gets the user object from the specified id.
      * @param id The Id of the user to retrieve.
      */
-    public async fetch(id: string) {
+    public static async fetch(id: string) {
         const user = this.cache.find(x => x.id == id);
 
         if(!user) {

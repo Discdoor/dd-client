@@ -1,4 +1,5 @@
 import { io, Socket } from "socket.io-client";
+import { registerMessagingEvents } from "./events/MessagingEvents";
 import { registerRelationshipEvents } from "./events/RelationshipEvents";
 
 /**
@@ -46,6 +47,7 @@ export class GatewayWebsocketClient {
      */
     registerEvents() {
         registerRelationshipEvents(this);
+        registerMessagingEvents(this);
         
         // Disconnect event
         this.socket.on('disconnect', () => {

@@ -42,7 +42,7 @@ interface UITooltipState {
 }
 
 /**
- * Represents a checkbox component.
+ * Represents a tooltip component.
  */
 class Tooltip extends React.Component<UITooltipOptions, UITooltipState> {
     constructor(props: UITooltipOptions) {

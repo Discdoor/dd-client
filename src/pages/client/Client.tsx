@@ -10,6 +10,7 @@ import DialogManager from '../../components/client/dialog/DialogManager';
 import GuildBar from '../../components/client/layout/GuildBar';
 import HomeContentPane from '../../components/client/layout/sets/home/HomeContentPane';
 import HomeUserPane from '../../components/client/layout/sets/home/HomeUserPane';
+import { MessagingPane } from '../../components/client/layout/sets/home/messaging/MessagingPane';
 import UserPaneContainer from '../../components/client/layout/UserPaneContainer';
 import SettingsSubView from '../../components/client/subview/SettingsSubView';
 import SubView from '../../components/client/subview/SubView';
@@ -37,6 +38,8 @@ export interface ClientState {
     }
 }
 
+export let ClientInstance: ClientPage;
+
 class ClientPage extends React.Component<ClientProps, ClientState> {
     /**
      * Dialog management reference.
@@ -60,6 +63,8 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
                 userCache: new APIUserCache()
             }
         };
+
+        ClientInstance = this;
     }
 
     getDialogManager = ()=>this.dlgMgrRef;
@@ -123,15 +128,21 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
     /**
      * Loads a UI layout.
      * @param id The ID of the layout to load.
+     * @param args Additional arguments
      */
-    loadLayout(id: string) {
+    loadLayout(id: string, args?: string[]) {
         switch(id) {
             case "home":
                 this.setUserPane(<HomeUserPane inst={this}></HomeUserPane>);
                 this.setContentPane(<HomeContentPane inst={this}></HomeContentPane>);
-                this.setState({ activeLayoutId: id });
+                break;
+            case "dm":
+                this.setUserPane(<HomeUserPane inst={this}></HomeUserPane>);
+                this.setContentPane(<MessagingPane initialArgs={args} channelId={args[0]} channelType="dm"></MessagingPane>);
                 break;
         }
+
+        this.setState({ activeLayoutId: id });
     }
 
     /**
@@ -148,6 +159,10 @@ class ClientPage extends React.Component<ClientProps, ClientState> {
 
         // Start at home page
         this.loadLayout("home");
+    }
+
+    componentWillUnmount(): void {
+        ClientInstance = null;
     }
 
     /**
